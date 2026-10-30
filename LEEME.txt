@@ -1,0 +1,32 @@
+RUBIK 2x2x1 — CRONÓMETRO
+================================
+
+Archivos:
+- index.html
+- styles.css
+- app.js
+
+Uso:
+1. Descomprimir la carpeta.
+2. Abrir index.html con Chrome, Edge o Firefox.
+3. Presionar "Mezclar cubo".
+4. Resolver usando:
+   W = U2
+   S = D2
+   A = L2
+   D = R2
+
+Características:
+- Simulación legal de un cuboide 2x2x1.
+- Giros de 180°.
+- Cronómetro automático.
+- Conteo de movimientos.
+- Inspección opcional de 15 segundos.
+- Historial local.
+- Mejor tiempo y mejor cantidad de movimientos.
+- Vista isométrica + mapa de las seis caras.
+- Funciona sin servidor y sin conexión.
+- Guarda estadísticas en localStorage.
+
+Nota:
+Los movimientos se modelan como giros de 180° de las cuatro caras laterales del cuboide.

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Rubik 2×2×1 — Cronómetro</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar glass">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div>
+          <p class="eyebrow">PUZZLE TRAINER</p>
+          <h1>Rubik 2×2×1</h1>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button id="btnHelp" class="icon-btn" title="Ayuda" aria-label="Ayuda">?</button>
+        <button id="btnSound" class="icon-btn is-on" title="Sonido" aria-label="Activar o desactivar sonido">♪</button>
+      </div>
+    </header>
+
+    <section class="dashboard">
+      <aside class="panel stats-panel glass">
+        <div class="stat-main">
+          <span class="label">TIEMPO</span>
+          <strong id="timer">00:00.000</strong>
+          <span id="statusText" class="status ready">Listo para comenzar</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="mini-stat">
+            <span>Movimientos</span>
+            <strong id="moves">0</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Mejor tiempo</span>
+            <strong id="bestTime">—</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Mejor mov.</span>
+            <strong id="bestMoves">—</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Intentos</span>
+            <strong id="attempts">0</strong>
+          </div>
+        </div>
+
+        <div class="scramble-box">
+          <span class="label">MEZCLA ACTUAL</span>
+          <code id="scrambleText">—</code>
+        </div>
+
+        <div class="control-stack">
+          <button id="btnScramble" class="btn primary">Mezclar cubo</button>
+          <button id="btnRestart" class="btn">Reiniciar intento</button>
+          <button id="btnSolved" class="btn subtle">Volver resuelto</button>
+        </div>
+
+        <label class="toggle-row">
+          <input id="inspectionToggle" type="checkbox" />
+          <span class="toggle-ui"></span>
+          <span>
+            <b>Inspección 15 s</b>
+            <small>Cuenta regresiva antes del primer movimiento.</small>
+          </span>
+        </label>
+      </aside>
+
+      <section class="puzzle-zone glass">
+        <div class="puzzle-header">
+          <div>
+            <p class="eyebrow">TABLERO INTERACTIVO</p>
+            <h2>Resolvé el cuboide</h2>
+          </div>
+          <div class="legend">
+            <span><i class="dot white"></i> Frente</span>
+            <span><i class="dot blue"></i> Arriba</span>
+            <span><i class="dot red"></i> Derecha</span>
+          </div>
+        </div>
+
+        <div class="interactive-stage" id="interactiveStage">
+          <button class="move-pad move-u" data-move="U2" aria-label="Girar U2" title="U2 — tecla W">
+            <span>U²</span>
+          </button>
+          <button class="move-pad move-d" data-move="D2" aria-label="Girar D2" title="D2 — tecla S">
+            <span>D²</span>
+          </button>
+          <button class="move-pad move-l" data-move="L2" aria-label="Girar L2" title="L2 — tecla A">
+            <span>L²</span>
+          </button>
+          <button class="move-pad move-r" data-move="R2" aria-label="Girar R2" title="R2 — tecla D">
+            <span>R²</span>
+          </button>
+
+          <div class="webgl-frame"><canvas id="rubikCanvas" class="rubik-canvas" aria-label="Rubik 2 por 2 por 1 interactivo"></canvas><button id="btnRecenter" class="recenter-btn" type="button">Recentrar vista</button></div>
+        </div>
+
+        <div class="move-controls">
+          <button class="move-btn" data-move="U2"><kbd>W</kbd><b>U²</b><span>mitad superior</span></button>
+          <button class="move-btn" data-move="D2"><kbd>S</kbd><b>D²</b><span>mitad inferior</span></button>
+          <button class="move-btn" data-move="L2"><kbd>A</kbd><b>L²</b><span>mitad izquierda</span></button>
+          <button class="move-btn" data-move="R2"><kbd>D</kbd><b>R²</b><span>mitad derecha</span></button>
+        </div>
+
+        <p class="hint">
+          Los giros del 2×2×1 son de <b>180°</b>. El cronómetro empieza con tu primer movimiento y se detiene al resolverlo.
+        </p>
+      </section>
+
+      <aside class="panel utility-panel glass">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">VISTA COMPLETA</p>
+            <h3>Mapa de caras</h3>
+          </div>
+        </div>
+
+        <div id="cubeNet" class="cube-net" aria-label="Desarrollo de las seis caras del cubo">
+          <div class="net-face top-face">
+            <span>U</span>
+            <div class="face-grid row2">
+              <i id="net-u-0"></i><i id="net-u-1"></i>
+            </div>
+          </div>
+
+          <div class="net-row">
+            <div class="net-face side-face">
+              <span>L</span>
+              <div class="face-grid col2">
+                <i id="net-l-0"></i><i id="net-l-1"></i>
+              </div>
+            </div>
+            <div class="net-face front-face-net">
+              <span>F</span>
+              <div class="face-grid grid4">
+                <i id="net-f-0"></i><i id="net-f-1"></i><i id="net-f-2"></i><i id="net-f-3"></i>
+              </div>
+            </div>
+            <div class="net-face side-face">
+              <span>R</span>
+              <div class="face-grid col2">
+                <i id="net-r-0"></i><i id="net-r-1"></i>
+              </div>
+            </div>
+            <div class="net-face back-face-net">
+              <span>B</span>
+              <div class="face-grid grid4">
+                <i id="net-b-0"></i><i id="net-b-1"></i><i id="net-b-2"></i><i id="net-b-3"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="net-face bottom-face">
+            <span>D</span>
+            <div class="face-grid row2">
+              <i id="net-d-0"></i><i id="net-d-1"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-wrap">
+          <div class="section-title compact">
+            <div>
+              <p class="eyebrow">HISTORIAL</p>
+              <h3>Últimos intentos</h3>
+            </div>
+            <button id="btnClearHistory" class="text-btn">Borrar</button>
+          </div>
+          <div id="historyList" class="history-list">
+            <p class="empty">Todavía no hay tiempos guardados.</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <dialog id="helpDialog" class="help-dialog">
+    <form method="dialog">
+      <button class="dialog-close" aria-label="Cerrar">×</button>
+      <p class="eyebrow">CÓMO JUGAR</p>
+      <h2>Rubik 2×2×1</h2>
+      <p>Este cuboide tiene cuatro piezas. Como su espesor es de una sola pieza, los movimientos válidos son giros de 180° de sus cuatro caras laterales.</p>
+      <div class="help-grid">
+        <div><kbd>W</kbd><b>U²</b><span>Gira la mitad superior.</span></div>
+        <div><kbd>S</kbd><b>D²</b><span>Gira la mitad inferior.</span></div>
+        <div><kbd>A</kbd><b>L²</b><span>Gira la mitad izquierda.</span></div>
+        <div><kbd>D</kbd><b>R²</b><span>Gira la mitad derecha.</span></div>
+      </div>
+      <p>Podés rotar la vista 3D arrastrando el cubo o consultar el mapa de las seis caras. Al completar todos los colores, el tiempo se guarda automáticamente.</p>
+      <button class="btn primary full">Entendido</button>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="confetti" class="confetti-layer" aria-hidden="true"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
