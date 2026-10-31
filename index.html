@@ -32,6 +32,7 @@
           <span class="label">TIEMPO</span>
           <strong id="timer">00:00.000</strong>
           <span id="statusText" class="status ready">Listo para comenzar</span>
+          <button id="btnStopDesktop" class="btn stop-btn" type="button" disabled>STOP</button>
         </div>
 
         <div class="stats-grid">
@@ -87,6 +88,12 @@
           </div>
         </div>
 
+        <div class="mobile-quickbar" aria-label="Cronómetro y movimientos">
+          <div class="mobile-quickstat"><span>TIEMPO</span><strong id="mobileTimer">00:00.000</strong></div>
+          <div class="mobile-quickstat"><span>MOVIMIENTOS</span><strong id="mobileMoves">0</strong></div>
+          <span id="mobileStatus" class="status ready">Listo para comenzar</span>
+          <button id="btnStopMobile" class="btn stop-btn" type="button" disabled>STOP</button>
+        </div>
         <div class="interactive-stage" id="interactiveStage">
           <button class="move-pad move-u" data-move="U2" aria-label="Girar U2" title="U2 — tecla W">
             <span>U²</span>
